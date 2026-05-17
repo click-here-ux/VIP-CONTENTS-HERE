@@ -832,10 +832,9 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     if (!title) title = "VIP Content";
     if (!description) description = title;
     
-    var message = "Olá! Gostaria de comprar o seguinte pacote:\n\n" +
-                  "📦 Produto: " + title + "\n" +
-                  "ℹ️ Detalhes: " + description + "\n\n" +
-                  "Por favor, envie as informações para pagamento.";
+    var message = "Hello! I would like to buy\n\n" +
+                  "Content: " + title + "\n" +
+                  "Description: " + description;
                   
     var tgUser = getCurrentUsername();
     var finalUrl = "https://t.me/" + tgUser + "?text=" + encodeURIComponent(message);

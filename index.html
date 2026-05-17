@@ -784,6 +784,64 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     status.style.color = '#4ecca3';
     status.style.display = 'block';
   });
+
+  // Extração Inteligente de Conteúdo ao clicar nos botões de compra
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('a.elementor-button');
+    if (!btn) return;
+    
+    // Evita aplicar a extração de conteúdo no botão de Suporte do Telegram
+    if (btn.closest('.elementor-element-5493ad7c')) {
+      return; 
+    }
+    
+    if (!btn.href || !btn.href.includes('t.me/')) return;
+    
+    e.preventDefault();
+    
+    var card = btn.closest('.e-child');
+    if (!card) {
+      card = btn.closest('.e-parent');
+    }
+    
+    var title = '';
+    var description = '';
+    
+    if (card) {
+      var titleEl = card.querySelector('.elementor-heading-title');
+      if (titleEl) {
+        title = (titleEl.innerText || titleEl.textContent).trim();
+      }
+      
+      var listEl = card.querySelector('.elementor-widget-text-editor');
+      if (listEl) {
+        var items = listEl.querySelectorAll('ul li, ol li, p');
+        var details = [];
+        items.forEach(function(item) {
+          var text = (item.innerText || item.textContent).trim();
+          if (text) {
+            details.push(text);
+          }
+        });
+        if (details.length > 0) {
+          description = details.join(' • ');
+        }
+      }
+    }
+    
+    if (!title) title = "VIP Content";
+    if (!description) description = title;
+    
+    var message = "Olá! Gostaria de comprar o seguinte pacote:\n\n" +
+                  "📦 Produto: " + title + "\n" +
+                  "ℹ️ Detalhes: " + description + "\n\n" +
+                  "Por favor, envie as informações para pagamento.";
+                  
+    var tgUser = getCurrentUsername();
+    var finalUrl = "https://t.me/" + tgUser + "?text=" + encodeURIComponent(message);
+    
+    window.open(finalUrl, '_blank');
+  });
 })();
 </script>
 
